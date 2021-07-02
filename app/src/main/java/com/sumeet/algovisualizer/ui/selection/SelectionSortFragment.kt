@@ -1,0 +1,32 @@
+package com.sumeet.algovisualizer.ui.selection
+
+import androidx.lifecycle.ViewModelProvider
+import android.os.Bundle
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import com.sumeet.algovisualizer.R
+
+class SelectionSortFragment : Fragment() {
+
+    companion object {
+        fun newInstance() = SelectionSortFragment()
+    }
+
+    private lateinit var viewModel: SelectionSortViewModel
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return inflater.inflate(R.layout.selection_sort_fragment, container, false)
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        viewModel = ViewModelProvider(this).get(SelectionSortViewModel::class.java)
+        // TODO: Use the ViewModel
+    }
+
+}
