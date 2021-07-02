@@ -79,7 +79,12 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
 
     //graph view
-    implementation 'com.jjoe64:graphview:4.2.2'
+    //implementation 'com.jjoe64:graphview:4.2.2'
+    implementation 'com.github.blackfizz:eazegraph:1.2.2@aar'
+    implementation 'com.nineoldandroids:library:2.4.0'
+
+    //for dp/sp
+    implementation 'com.intuit.sdp:sdp-android:1.0.6'
 
 
 }
