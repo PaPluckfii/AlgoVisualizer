@@ -13,12 +13,11 @@
         android:layout_margin="@dimen/_5sdp"
         android:elevation="@dimen/_5sdp">
 
-        <org.eazegraph.lib.charts.BarChart
+        <com.github.mikephil.charting.charts.BarChart
             android:id="@+id/selectionSortChart"
             android:layout_width="match_parent"
             android:layout_margin="@dimen/_5sdp"
-            android:layout_height="@dimen/_300sdp"
-            app:egLegendHeight="0dp" />
+            android:layout_height="@dimen/_300sdp" />
 
     </androidx.cardview.widget.CardView>
 
