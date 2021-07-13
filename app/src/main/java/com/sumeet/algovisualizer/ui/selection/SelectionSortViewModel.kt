@@ -19,8 +19,8 @@ class SelectionSortViewModel : ViewModel() {
         return repository.getLiveArray()
     }
 
-    fun selectionSort() {
-        repository.selectionSort()
-    }
+//    fun selectionSort() {
+//        repository.selectionSort()
+//    }
 
 }

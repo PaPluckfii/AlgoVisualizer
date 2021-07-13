@@ -9,6 +9,8 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
@@ -22,15 +24,12 @@ import kotlinx.coroutines.launch
 
 class SelectionSortFragment : Fragment() {
 
-    companion object {
-        fun newInstance() = SelectionSortFragment()
-    }
-
     private lateinit var viewModel: SelectionSortViewModel
     private lateinit var myArray: MutableList<BarEntry>
     private lateinit var dataSet: BarDataSet
     private lateinit var colorList: MutableList<Int>
-    private lateinit var handlerThread: Handler
+    private var timer : Long = 800
+    private var action = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -62,15 +61,16 @@ class SelectionSortFragment : Fragment() {
 
         setGraphView()
 
-        viewModel.getLiveArray().observe(viewLifecycleOwner, androidx.lifecycle.Observer {
-            myArray = it.array
-            colorList = it.colorList
-            selectionSortChart.invalidate()
-        })
-
         btnStartSelectionSort.setOnClickListener {
-            CoroutineScope(Dispatchers.IO).launch {
-                viewModel.selectionSort()
+            if(action == 0){
+                CoroutineScope(Dispatchers.IO).launch {
+                    selectionSort()
+                }
+                action = 1
+                btnStartSelectionSort.setImageResource(R.drawable.ic_baseline_refresh_24)
+            }else{
+                val navController = findNavController()
+                navController.navigate(R.id.action_nav_selection_self)
             }
         }
 
@@ -104,5 +104,51 @@ class SelectionSortFragment : Fragment() {
         selectionSortChart.invalidate()
     }
 
+    private fun selectionSort(){
+
+        for (i in myArray.indices) {
+
+            colorList[i] = ContextCompat.getColor(requireContext(), R.color.red)
+            selectionSortChart.invalidate()
+
+            Thread.sleep(timer)
+            var minIndex = i
+
+            colorList[i] = ContextCompat.getColor(requireContext(), R.color.purple_500)
+            selectionSortChart.invalidate()
+
+            for (j in i + 1 until myArray.size) {
+                colorList[j] = ContextCompat.getColor(requireContext(), R.color.red)
+                selectionSortChart.invalidate()
+                Thread.sleep(timer)
+                if (myArray[j].y < myArray[minIndex].y) {
+
+                    if(minIndex != i)
+                        colorList[minIndex] = ContextCompat.getColor(requireContext(), R.color.theme_orange)
+                    minIndex = j
+                    colorList[minIndex] = ContextCompat.getColor(requireContext(), R.color.green)
+                    selectionSortChart.invalidate()
+
+                }
+                if(minIndex != j)
+                    colorList[j] = ContextCompat.getColor(requireContext(), R.color.theme_orange)
+                selectionSortChart.invalidate()
+            }
+
+            selectionSortChart.invalidate()
+
+            val temp = myArray[minIndex].y
+            myArray[minIndex].y = myArray[i].y
+            myArray[i].y = temp
+
+            Thread.sleep(300)
+            colorList[minIndex] = ContextCompat.getColor(requireContext(), R.color.theme_orange)
+            colorList[i] = ContextCompat.getColor(requireContext(), R.color.theme_orange)
+            selectionSortChart.invalidate()
+        }
+
+        selectionSortChart.invalidate()
+
+    }
 
 }

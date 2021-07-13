@@ -32,33 +32,6 @@ class SortingRepository {
         return arrayModelToSort
     }
 
-    fun selectionSort(){
 
-        for (i in arrayModelToSort.value?.array?.indices!!) {
-            //Thread.sleep(1000)
-            var minIndex = i
-            arrayModelToSort.value!!.colorList[minIndex] = R.color.purple_700
-
-            for (j in i + 1 until arrayModelToSort.value!!.array.size) {
-
-                //Thread.sleep(500)
-                if (arrayModelToSort.value!!.array[j].y < arrayModelToSort.value!!.array[minIndex].y) {
-
-                    minIndex = j
-                    arrayModelToSort.value!!.colorList[i] = R.color.theme_orange
-                    arrayModelToSort.value!!.colorList[j] = R.color.red
-
-                }
-
-            }
-
-            val temp = arrayModelToSort.value!!.array[minIndex].y
-            arrayModelToSort.value!!.colorList[minIndex]
-
-            arrayModelToSort.value!!.array[minIndex].y = arrayModelToSort.value!!.array[i].y
-            arrayModelToSort.value!!.array[i].y = temp
-
-        }
-    }
 
 }
