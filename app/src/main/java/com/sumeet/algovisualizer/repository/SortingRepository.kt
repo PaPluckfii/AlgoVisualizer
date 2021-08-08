@@ -1,8 +1,6 @@
 package com.sumeet.algovisualizer.repository
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.liveData
 import com.github.mikephil.charting.data.BarEntry
 import com.sumeet.algovisualizer.R
 import com.sumeet.algovisualizer.model.ArrayModelToSort
@@ -22,7 +20,7 @@ class SortingRepository {
                 )
             },
             MutableList(10){
-               R.color.theme_orange
+               R.color.theme_orange_variant
             }
         ))
         return arrayModelToSort.value
