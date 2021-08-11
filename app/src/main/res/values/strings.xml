@@ -11,4 +11,36 @@
     <string name="menu_bubble">Bubble Sort</string>
     <string name="menu_selection">Selection Sort</string>
     <string name="menu_home">Home</string>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="sort_action_button">SortActionButton</string>
+
+    <string name="selection_sort_code">
+        public class SelectionSort {\n
+            \t public static int[] selectionSort(int[] arr) {\n
+                \t\t if(arr.length == 1) return arr;\n
+                \n
+                \t\t for(int i=0; i <![CDATA[<]]> arr.length; i++) {\n
+                    \t\t\t int index = i;\n
+                    \n
+                    \t\t\t for(int j=i+1; j <![CDATA[<]]> arr.length; j++) {\n
+                        \t\t\t\t if(arr[j] <![CDATA[<]]> arr[index]) {\n
+                        \t\t\t\t index = j;\n
+                    \t\t\t }\n
+                \t\t }\n
+                \t\t int smallestNumber = arr[index];\n
+                \t\t arr[index] = arr[i];\n
+                \t\t arr[i] = smallestNumber;\n
+                \t\t }\n
+            \n
+                \t\t return arr;\n
+            \t}\n
+        \n
+        \t public static void main(String[] args) {\n
+                \t\t int[] arr = {55, 23, 26, 2, 25};\n
+                \t\t System.out.print(Arrays.toString(selectionSort(arr)));\n
+            \t }\n
+        }\n
+        \n
+    </string>
 </resources>

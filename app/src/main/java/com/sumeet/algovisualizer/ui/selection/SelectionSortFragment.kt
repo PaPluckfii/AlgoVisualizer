@@ -11,8 +11,11 @@ import androidx.navigation.fragment.findNavController
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
+import com.google.android.material.tabs.TabLayoutMediator
 import com.sumeet.algovisualizer.R
+import com.sumeet.algovisualizer.model.room.LogsEntity
 import com.sumeet.algovisualizer.ui.MyValueFormatter
+import com.sumeet.algovisualizer.ui.adapters.BottomViewPagerAdapter
 import kotlinx.android.synthetic.main.selection_sort_fragment.*
 import kotlinx.coroutines.*
 
@@ -124,8 +127,20 @@ class SelectionSortFragment : Fragment() {
         selectionSortChart.invalidate()
     }
 
+    /**
+     * This function is to setup the bottom viewpager
+     */
     private fun setViewPager() {
+        val viewPagerAdapter = BottomViewPagerAdapter(this)
+        bottomViewPager.adapter = viewPagerAdapter
 
+        TabLayoutMediator(viewPagerTabLayout, bottomViewPager){tab , pos ->
+            tab.text = when(pos){
+                0 -> "Logs"
+                1 -> "Code"
+                else -> "Logs"
+            }
+        }.attach()
     }
 
     /**
@@ -149,6 +164,7 @@ class SelectionSortFragment : Fragment() {
 
             delay(timer)
             var minIndex = i
+            viewModel.insertLog("Current starting from index $i")
             updateGraph()
 
             for (j in i + 1 until myArray.size) {
@@ -165,13 +181,19 @@ class SelectionSortFragment : Fragment() {
                     updateGraph()
 
                 }
-                if(minIndex != j)
-                    colorList[j] = ContextCompat.getColor(requireContext(), R.color.theme_orange_variant)
+                if(minIndex != j) {
+                    colorList[j] =
+                        ContextCompat.getColor(requireContext(), R.color.theme_orange_variant)
+                    viewModel.insertLog("Current Minimum Found at index $minIndex")
+                }else
+                    viewModel.insertLog("No Element found less than ${myArray[i]}")
 
                 updateGraph()
             }
 
             //swapping values
+            viewModel.insertLog("Swapping values at index $i and $minIndex")
+
             val temp = myArray[minIndex].y
             myArray[minIndex].y = myArray[i].y
             myArray[i].y = temp

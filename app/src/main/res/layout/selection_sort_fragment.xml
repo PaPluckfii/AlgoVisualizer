@@ -33,7 +33,22 @@
         android:src="@drawable/ic_baseline_play_arrow_24"
         app:layout_constraintBottom_toBottomOf="@+id/cardViewSelectionSort"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardViewSelectionSort"
+        android:contentDescription="@string/sort_action_button" />
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/bottomViewPager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/viewPagerTabLayout"
         app:layout_constraintTop_toBottomOf="@+id/cardViewSelectionSort" />
 
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/viewPagerTabLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

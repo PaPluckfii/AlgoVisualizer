@@ -4,9 +4,11 @@ import androidx.lifecycle.MutableLiveData
 import com.github.mikephil.charting.data.BarEntry
 import com.sumeet.algovisualizer.R
 import com.sumeet.algovisualizer.model.ArrayModelToSort
+import com.sumeet.algovisualizer.model.room.LogsEntity
+import kotlinx.coroutines.flow.Flow
 import kotlin.random.Random
 
-class SortingRepository {
+class SortingRepository() {
 
     private lateinit var arrayModelToSort: MutableLiveData<ArrayModelToSort>
 
@@ -26,10 +28,12 @@ class SortingRepository {
         return arrayModelToSort.value
     }
 
-    fun getLiveArray(): MutableLiveData<ArrayModelToSort>{
-        return arrayModelToSort
+    suspend fun getLiveLogs(): Flow<List<LogsEntity>> {
+        return logsDao.getLogs()
     }
 
-
+    suspend fun insertLog(log: String) {
+        logsDao.insertIntoLogs(log)
+    }
 
 }
