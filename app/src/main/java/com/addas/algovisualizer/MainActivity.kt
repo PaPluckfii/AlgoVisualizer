@@ -33,7 +33,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-    private val viewModel: MyViewModel by viewModels()
+    private val viewModel: MainViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -51,7 +51,7 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun BarGraph(viewModel: MyViewModel) {
+fun BarGraph(viewModel: MainViewModel) {
     val data = viewModel.data
     var animatingData by remember { mutableStateOf(data) }
 
@@ -104,44 +104,4 @@ fun BarGraph(viewModel: MyViewModel) {
             Text("Shuffle")
         }
     }
-}
-
-@HiltViewModel
-class MyViewModel @Inject constructor() : ViewModel() {
-    var data by mutableStateOf(listOf(8, 4, 2, 9, 1, 5, 7, 3, 6))
-
-    fun shuffleData() {
-        data = data.shuffled()
-    }
-
-    fun sortArr(arr: MutableList<Int>) {
-        // Bubble Sort
-        CoroutineScope(Dispatchers.IO).launch {
-            for (i in arr.indices) {
-                for (j in 0 until arr.size - i - 1) {
-                    // Highlight the two bars being compared
-                    arr[j] = arr[j] * -1
-                    arr[j + 1] = arr[j + 1] * -1
-
-                    // Delay for visualization purposes
-                    delay(1000)
-
-                    if (arr[j] > arr[j + 1]) {
-                        // Swap the two bars
-                        val temp = arr[j]
-                        arr[j] = arr[j + 1]
-                        arr[j + 1] = temp
-
-                        // Delay for visualization purposes
-                        delay(1000)
-                    }
-
-                    // Un-highlight the two bars
-                    arr[j] = arr[j] * -1
-                    arr[j + 1] = arr[j + 1] * -1
-                }
-            }
-        }
-    }
-
 }
