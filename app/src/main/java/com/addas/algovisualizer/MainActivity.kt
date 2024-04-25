@@ -4,46 +4,44 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.compose.animation.core.LinearEasing
-import androidx.compose.animation.core.animateDp
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.core.updateTransition
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.times
-import androidx.lifecycle.ViewModel
+import androidx.navigation.NavController
+import com.addas.algovisualizer.ui.selection_sort.SelectionSortViewModel
 import com.addas.algovisualizer.ui.theme.AlgoVisualizerTheme
+import com.addas.algovisualizer.util.Navigation
+import com.addas.algovisualizer.util.Screen
 import dagger.hilt.android.AndroidEntryPoint
-import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-
-    private val viewModel: MainViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             AlgoVisualizerTheme {
-                // A surface container using the 'background' color from the theme
                 Surface(
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(10.dp),
                     color = MaterialTheme.colors.background
                 ) {
-                    BarGraph(viewModel)
+                    Navigation()
                 }
             }
         }
@@ -51,57 +49,39 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun BarGraph(viewModel: MainViewModel) {
-    val data = viewModel.data
-    var animatingData by remember { mutableStateOf(data) }
-
-    LaunchedEffect(data) {
-        animatingData = data
-    }
-
-    val barWidth = 40.dp
-    val barSpacing = 10.dp
-    val barHeightMultiplier = 20.dp
-
-    Column(modifier = Modifier.fillMaxWidth()) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(
-                    barHeightMultiplier * data
-                        .maxOrNull()!!
-                        .toFloat() + barSpacing * 2
-                ),
-            verticalAlignment = Alignment.Bottom
-        ) {
-            animatingData.forEachIndexed { index, item ->
-                val targetHeight = item * barHeightMultiplier
-                val transition = updateTransition(targetHeight, label = "barHeight$index")
-                val barHeight by transition.animateDp(
-                    transitionSpec = {
-                        tween(
-                            durationMillis = 500,
-                            easing = LinearEasing
-                        )
-                    },    //Lower duration value would be idle for this
-                    label = ""
-                ) { targetHeight }
-
-                Box(
-                    modifier = Modifier
-                        .width(barWidth)
-                        .height(barHeight)
-                        .background(Color.Blue)
-                        .padding(horizontal = barSpacing / 2, vertical = barSpacing),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(item.toString(), color = Color.White)
-                }
-            }
+fun MainScreen(navController: NavController) {
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Button(modifier = Modifier.padding(10.dp), onClick = {
+            navController.navigate(Screen.SelectionSortScreen.route)
+        }) {
+            Text(text = "Selection Sort")
         }
+    }
+}
 
-        Button(onClick = { viewModel.shuffleData() }) {
-            Text("Shuffle")
+@Composable
+fun BarGraph(array: List<Int>, currentElement: Int) {
+
+    Canvas(
+        modifier = Modifier
+            .fillMaxWidth()
+            .fillMaxHeight(0.7f)
+    ) {
+        val barWidth = size.width / array.size
+
+        array.forEachIndexed { index, value ->
+            val barHeight = value.toFloat() / array.maxOrNull()!! * size.height
+            val barColor = if (index == currentElement) Color.Red else Color.Blue
+
+            drawRect(
+                color = barColor,
+                topLeft = Offset(index * barWidth, size.height - barHeight),
+                size = Size(barWidth, barHeight)
+            )
         }
     }
 }
